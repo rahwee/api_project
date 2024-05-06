@@ -12,5 +12,6 @@ class Constants
 
     // TOKEN
     const TOKEN_EXPIRED = "TOKEN_EXPIRED";
+    const ACTION_STATUS_CREATE_ACCOUNT = 'CREATE_ACCOUNT';
 
 }

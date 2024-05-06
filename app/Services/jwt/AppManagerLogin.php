@@ -4,7 +4,7 @@ namespace App\Services\jwt;
 
 use App\Models\User;
 use App\Enums\Constants;
-use App\Services\SVuser;
+use App\Services\SVUser;
 use Carbon\CarbonInterface;
 use Illuminate\Http\Response;
 use App\Exceptions\POSException;
@@ -23,7 +23,7 @@ class AppManagerLogin
         $login_type = $params['login_type'];
         $extra      = [];
 
-        $user = (new SVuser)->getByEmail($email);
+        $user = (new SVUser)->getByEmail($email);
         if(!isset($user) || !Hash::check($password, $user->password))
         {
             throw new POSException('Incorrect email or password', "WRONG_PASSWORD", [], Response::HTTP_BAD_REQUEST);

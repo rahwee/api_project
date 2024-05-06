@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['prefix'=>'v1', 'middleware'=>['auth:jwt', 'role:superadmin']], function(){
+Route::group(['prefix'=>'super-admin', 'middleware'=>['auth:jwt']], function(){
     Route::get('room', [RoomController::class, 'index']);
     Route::post('room', [RoomController::class, 'store']);
 });

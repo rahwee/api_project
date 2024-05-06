@@ -24,8 +24,4 @@ Route::prefix('v1')->group(function(){
     Route::post('login', [AuthController::class, 'login']);
 });
 
-Route::group(['middleware'=>'auth:jwt', 'prefix'=>'v1'], function(){
-    Route::get('room', [RoomController::class, 'index']);
-    Route::post('room', [RoomController::class, 'store']);
-});
 

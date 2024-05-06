@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 
-class SVuser extends BaseService
+class SVUser extends BaseService
 {
     public function getQuery()
     {
@@ -24,5 +24,11 @@ class SVuser extends BaseService
     {
         $query = $this->getQuery();
         return $query ? $query->getModel()->getTable() : null;
+    }
+
+    public function store($params)
+    {
+        $user = User::create($params);
+        return $user;
     }
 }
