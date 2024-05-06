@@ -18,12 +18,9 @@ class SVRoom extends BaseService
 
     public function create($params)
     {
-        // $room_queue = new ProcessNewRoom($params);
-        // dispatch($room_queue);
-        $name = "Funny Coder";
-        // dd(new SampleEmail($name));
-        Mail::to('rahweekh@gmail.com')->send(new SampleEmail($name));
-        return "Mail is sent";
+        $table = Room::find(13259);
+        ProcessNewRoom::dispatch($table);
+        return "Successfully send";
     }
 
 

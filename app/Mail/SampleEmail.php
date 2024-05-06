@@ -15,6 +15,7 @@ use Illuminate\Mail\Mailables\Envelope;
 class SampleEmail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
+    
     private $fromEmail;
     private $subjectEmail;
     private $name;

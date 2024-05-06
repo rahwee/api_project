@@ -2,10 +2,12 @@
 
 namespace App\Jobs;
 
-use App\Enums\Constants;
 use App\Models\Room;
+use App\Enums\Constants;
 use App\Services\SVRoom;
+use App\Mail\SampleEmail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,16 +19,17 @@ class ProcessNewRoom implements ShouldQueue
 
     private $params;
     private $action;
-
+    public $status;
+    public $email = "rahweekh@gmail.com";
     public $tries = 1;
     public $timeout = 600;
     /**
      * Create a new job instance.
      */
-    public function __construct($params)
+    public function __construct(Room $room)
     {
-        $this->action  = Constants::ACTION_STATUS_CREATE_ACCOUNT;
-        $this->params = $params;
+        $this->status = $room->status;
+        $this->email = $this->email;
     }
 
     /**
@@ -34,12 +37,10 @@ class ProcessNewRoom implements ShouldQueue
      */
     public function handle(): void
     {
-        echo "ACTION : ". $this->action . PHP_EOL;
-        if ($this->action == Constants::ACTION_STATUS_CREATE_ACCOUNT)
-        {
-            $params  = $this->params;
-            Room::create($params);
-            echo "Account Children Created!".PHP_EOL;
-        }
+        $now = now();
+        Mail::to($this->email)->later(
+            $now->addSecond(5), 
+            new SampleEmail($this->status)
+        );
     }
 }

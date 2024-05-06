@@ -11,7 +11,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     </head>
     <body class="antialiased">
-        This me as me! Hey {{$name}}, 
+        This me as me! Hey {{$statu}}, 
         Can your Laravel app send emails yet? 😉 
         Mailtrap
     </body>
