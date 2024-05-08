@@ -17,7 +17,7 @@ class RabbitMQService
 
     public function publish($message)
     {
-        $connection = new AMQPStreamConnection(env('MQ_HOST'), env('MQ_PORT'), env('MQ_USER'), env('MQ_PASS'), env('MQ_VHOST'));
+        $connection = new AMQPStreamConnection(env('RABBITMQ_HOST'), env('RABBITMQ_PORT'), env('RABBITMQ_USER'), env('RABBITMQ_PASS'), env('RABBITMQ_VHOST'));
         $channel = $connection->channel();
         $channel->exchange_declare('test_exchange', 'direct', false, false, false);
         $channel->queue_declare('test_queue', false, false, false, false);
@@ -31,7 +31,7 @@ class RabbitMQService
 
     public function consume()
     {
-        $connection = new AMQPStreamConnection(env('MQ_HOST'), env('MQ_PORT'), env('MQ_USER'), env('MQ_PASS'), env('MQ_VHOST'));
+        $connection = new AMQPStreamConnection(env('RABBITMQ_HOST'), env('RABBITMQ_PORT'), env('RABBITMQ_USER'), env('RABBITMQ_PASS'), env('RABBITMQ_VHOST'));
         $channel = $connection->channel();
         $callback = function ($msg) {
             echo ' [x] Received ', $msg->body, "\n";
