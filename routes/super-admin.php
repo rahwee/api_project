@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\RoomController;
-use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
+use App\Services\RabbitMQService;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix'=>'super-admin', 'middleware'=>['auth:jwt']], function(){
     Route::get('room', [RoomController::class, 'index']);
     Route::post('room', [RoomController::class, 'store']);
+
 });
+
+
 

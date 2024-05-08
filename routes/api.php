@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\RoomController;
-use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
+use App\Services\RabbitMQService;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,5 +24,13 @@ Route::prefix('v1')->group(function(){
     Route::post('register',[AuthController::class,'register']);
     Route::post('login', [AuthController::class, 'login']);
 });
+
+Route::post("/v1/message", function (Request $request) {
+    $message = $_POST['message'];
+    $mqService = (new RabbitMQService());
+    $mqService->publish($message);
+    return view('welcome');
+});
+
 
 
