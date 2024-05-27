@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\RoomController;
 Route::prefix('v1')->group(function(){
     Route::post('register',[AuthController::class,'register']);
     Route::post('login', [AuthController::class, 'login']);
+    Route::post('verify-email/{id}/{hash}', [AuthController::class, 'verify'] );
 });
 
 Route::post("/v1/message", function (Request $request) {

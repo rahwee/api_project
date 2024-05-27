@@ -5,13 +5,17 @@ namespace App\Services\jwt;
 use App\Models\User;
 use App\Enums\Constants;
 use App\Services\SVUser;
+use App\Mail\VerifyEmail;
 use Carbon\CarbonInterface;
 use Illuminate\Http\Response;
+use App\Http\Tools\ParamTools;
 use App\Exceptions\POSException;
 use App\Services\Auth\JwtBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Auth\Events\Registered;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AppManagerLogin
@@ -97,11 +101,41 @@ class AppManagerLogin
             $builder->expiresAt($exp);
         }
 
-        // if ($user) {
-        //     $builder->setDbName($user->account->db_name);
-        //     $builder->relatedTo(@$user->global_id);
-        // }
-
         return $builder->getToken();
     }
+
+    public function register($params)
+    {
+        $email = ParamTools::get_value($params, 'email', '');
+        $params['email_verified_at'] = null;
+        // Check if use is exited
+        $email = (new SVUser)->getByEmail($email);
+        if($email){
+            throw new POSException('Email is already exit', "EXISTED_EMAIL", [], Response::HTTP_BAD_REQUEST);
+        }
+        // Save use with email pending
+        $user = User::create($params);
+        // Send email you current email request register
+        event(new Registered($user));
+
+        Mail::to($user->email)->send(new VerifyEmail($user));
+
+    }
+
+    public function verify($params)
+    {
+        $id    = ParamTools::get_value($params, 'id');
+        $email = ParamTools::get_value($params, 'email');
+
+        $user = User::findOrFail($id);
+        
+        if($user && sha1($user->email) === sha1($email))
+        {
+            $user->email_verified_at = now();
+            $user->save();
+        }
+
+        return "Successfully verified";
+    }
+
 }
