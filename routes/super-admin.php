@@ -21,10 +21,9 @@ use App\Http\Controllers\Api\RoomController;
 //     return $request->user();
 // });
 
-Route::group(['prefix'=>'super-admin', 'middleware'=>['auth:jwt']], function(){
+Route::group(['middleware'=>['auth:jwt']], function(){
     Route::get('room', [RoomController::class, 'index']);
     Route::post('room', [RoomController::class, 'store']);
-
 });
 
 

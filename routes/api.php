@@ -26,12 +26,6 @@ Route::prefix('v1')->group(function(){
     Route::post('verify-email/{id}/{hash}', [AuthController::class, 'verify'] );
 });
 
-Route::post("/v1/message", function (Request $request) {
-    $message = $_POST['message'];
-    $mqService = (new RabbitMQService());
-    $mqService->publish($message);
-    return view('welcome');
-});
 
 
 

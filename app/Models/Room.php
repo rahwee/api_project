@@ -10,6 +10,8 @@ class Room extends Model
     use HasFactory;
 
     public $fillable = [
+        'global_id',
+        'version',
         'name',
         'capacity',
         'status'
