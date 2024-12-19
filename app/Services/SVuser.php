@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Http\Tools\ParamTools;
+
+use Illuminate\Support\Facades\DB;
+use function Laravel\Prompts\table;
 
 class SVUser extends BaseService
 {
@@ -25,6 +29,20 @@ class SVUser extends BaseService
     {
         $query = $this->getQuery();
         return $query ? $query->getModel()->getTable() : null;
+    }
+
+    public function getUser($params)
+    {
+        $limit = ParamTools::get_value($params, 'limit', 5);
+
+        $users = DB::table('users')
+            ->select(
+                'id',
+                'name',
+                'email'
+            )
+            ->paginate($limit);
+        return $users;
     }
 
     public function store($params)
