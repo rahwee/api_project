@@ -50,4 +50,26 @@ class SVUser extends BaseService
         $user = User::create($params);
         return $user;
     }
+
+    public function update($params, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return throw new \Exception('User not found');
+        }
+
+        $user->update($params);
+        return $user->name;
+    }
+
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return throw new ('User not found');
+        }
+        $user->delete();
+        return true;
+    }
 }

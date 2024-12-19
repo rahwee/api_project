@@ -17,8 +17,8 @@ return new class extends Migration
                 $table->id('id');
                 $table->char('global_id', 36)->nullable()->unique();
                 $table->integer('version')->default(1);
-                $table->unsignedInteger('user_id');
-                $table->unsignedInteger('room_id');
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('room_id');
                 $table->decimal('quantity')->unsigned();
                 $table->enum('status', ['CANCELLED','PENDING','DONE']);
                 $table->integer('unit_price');
