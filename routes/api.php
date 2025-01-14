@@ -18,22 +18,21 @@ use App\Http\Controllers\UserController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
-Route::prefix('v1')->group(function(){
-
-    Route::get('users', [UserController::class, 'index']);
-    Route::patch('users/{id}', [UserController::class, 'update']);
-    Route::delete('users/{id}', [UserController::class, 'destroy']);
-});
-
 Route::prefix('v1')->group(function(){
     Route::post('register',[AuthController::class,'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('verify-email', [AuthController::class, 'verify']);
 });
+
+Route::prefix('v1')->group(function (){
+    Route::group(['middleware' => ['auth:jwt']], function (){
+        Route::get('users', [UserController::class, 'index']);
+        Route::patch('users/{id}', [UserController::class, 'update']);
+        Route::delete('users/{id}', [UserController::class, 'destroy']);
+    });
+});
+
+
 
 
 

@@ -55,6 +55,11 @@ class JwtBuilder
         return $this->registerClaim('sub', $val);
     }
 
+    public function relatedToUser($val)
+    {
+        return $this->registerClaim('id', $val);
+    }
+
     /**
      * The aud (audience) claim identifies the recipients that the JWT is intended for.
      * Each principal intended to process the JWT MUST identify itself with a value in the audience claim.

@@ -24,12 +24,13 @@ class AppManagerLogin
 {
     public function authenticateAndGetToken($params)
     {
-        $email      = $params['credential']['email'];
-        $password   = $params['credential']['password'];
+        $email      = $params['email'];
+        $password   = $params['password'];
         $login_type = $params['login_type'];
         $extra      = [];
-
+        
         $user = (new SVUser)->getByEmail($email);
+
         if(!isset($user) || !Hash::check($password, $user->password))
         {
             throw new POSException('Incorrect email or password', "WRONG_PASSWORD", [], Response::HTTP_BAD_REQUEST);
@@ -49,6 +50,20 @@ class AppManagerLogin
             "expire_at" => $expired_at,
             "token"     => $token,
         ];
+    }
+
+    public function generateSignToken($user)
+    {
+        $extra['timezone'] = config('app.timezone');
+        $expired_at        = now()->addMinutes(1440);
+        $user              = User::where("id", $user->id)->first();
+
+        $builder = new JwtBuilder();
+        $token = $builder
+                        ->relatedToUser($user->id)
+                        ->expiresAt($expired_at)
+                        ->getToken();
+        return $token;
     }
 
     /**
@@ -108,7 +123,9 @@ class AppManagerLogin
 
     public function register($params)
     {
-        $email = ParamTools::get_value($params, 'email', '');
+        $email      = ParamTools::get_value($params, 'email', '');
+        $login_type = ParamTools::get_value($params, 'login_type');
+
         $params['email_verified_at'] = null;
         
         // Check if use is exited
@@ -119,10 +136,10 @@ class AppManagerLogin
 
         // Save use with email pending
         $user = User::create($params);
+        
+        $token = $this->generateSignToken($user, []);
 
-        // Send email you current email request register
-
-        SendVerificationEmail::dispatch($user);
+        return $token;
 
     }
 
@@ -141,5 +158,6 @@ class AppManagerLogin
 
         return "Successfully verified";
     }
+
 
 }

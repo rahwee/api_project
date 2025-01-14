@@ -20,7 +20,7 @@ class SVUser extends BaseService
         $table = $this->getTableName();
         return $this->getQuery()
             ->where($table . '.email', $email)
-            ->whereNotNull($table. '.email_verified_at')
+            // ->whereNotNull($table. '.email_verified_at')
             ->select($table . '.*')
             ->first();
     }
