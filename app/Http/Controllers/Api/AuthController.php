@@ -45,4 +45,14 @@ class AuthController extends BaseApi
             return $this->respondError($e);
         }
     }
+
+    public function meInfo()
+    {
+        try{
+            $data = $this->getService()->meInfo();
+            return $this->respondSuccess($data);
+        }catch(\Throwable $e){
+            return $this->respondError($e);
+        }
+    }
 }

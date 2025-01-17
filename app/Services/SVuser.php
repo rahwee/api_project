@@ -51,14 +51,14 @@ class SVUser extends BaseService
         return $user;
     }
 
-    public function update($params, $id)
+    public function updateMe($params)
     {
-        $user = User::find($id);
+        $user = auth()->user();
+        $user = User::find($user->id);
 
         if (!$user) {
             return throw new \Exception('User not found');
         }
-
         $user->update($params);
         return $user->name;
     }

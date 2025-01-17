@@ -57,11 +57,11 @@ class UserController extends BaseApi
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateMe(Request $request)
     {
         try{
             $params = $request->all();
-            $data = $this->getService()->update($params, $id);
+            $data = $this->getService()->updateMe($params);
             return $this->respondSuccess($data);
         }catch(\Throwable $e){
             return $e;

@@ -159,5 +159,19 @@ class AppManagerLogin
         return "Successfully verified";
     }
 
+    public function meInfo()
+    {
+        $user = auth()->user();
+
+        $me = DB::table('users')
+                ->select(
+                    'name',
+                    'email'
+                )
+                ->where('id', $user->id)
+                ->first();
+        return $me;
+    }
+
 
 }
