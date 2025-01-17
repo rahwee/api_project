@@ -27,8 +27,9 @@ Route::prefix('v1')->group(function(){
 Route::prefix('v1')->group(function (){
     Route::group(['middleware' => ['auth:jwt']], function (){
         Route::get('me', [AuthController::class, 'meInfo']);
-        Route::get('users', [UserController::class, 'index']);
         Route::patch('users', [UserController::class, 'updateMe']);
+
+        Route::get('users', [UserController::class, 'index']);
         Route::delete('users/{id}', [UserController::class, 'destroy']);
     });
 });
